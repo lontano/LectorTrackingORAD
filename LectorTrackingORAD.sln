@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LectorTrackingORAD", "LectorTrackingORAD\LectorTrackingORAD.vbproj", "{692CD834-83F7-4D5B-AC1C-92E79F902064}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup_LectorTrackingORAD", "Setup_LectorTrackingORAD\Setup_LectorTrackingORAD.vdproj", "{36DB889E-86F5-4B21-8ECF-50D53A2C6B7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSTools", "..\GSFilters\GSTools\GSTools.csproj", "{2C72E154-A6F1-4236-9404-5756E5A15325}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,8 +17,10 @@ Global
 		{692CD834-83F7-4D5B-AC1C-92E79F902064}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{692CD834-83F7-4D5B-AC1C-92E79F902064}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{692CD834-83F7-4D5B-AC1C-92E79F902064}.Release|Any CPU.Build.0 = Release|Any CPU
-		{36DB889E-86F5-4B21-8ECF-50D53A2C6B7B}.Debug|Any CPU.ActiveCfg = Debug
-		{36DB889E-86F5-4B21-8ECF-50D53A2C6B7B}.Release|Any CPU.ActiveCfg = Release
+		{2C72E154-A6F1-4236-9404-5756E5A15325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C72E154-A6F1-4236-9404-5756E5A15325}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C72E154-A6F1-4236-9404-5756E5A15325}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C72E154-A6F1-4236-9404-5756E5A15325}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
