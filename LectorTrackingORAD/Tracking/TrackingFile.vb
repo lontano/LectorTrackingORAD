@@ -97,12 +97,8 @@
           Else
             sAux = "File"
           End If
-
           CTrackingSource.Host = sAux
-
-
           CTrackingSource.TrackingHost = New TrackingHost()
-
           CTrackingSource.TrackingHost.Host = CTrackingSource.Host
           CTrackingSource.TrackingHost.IP = CiValue.HOST
           CTrackingSource.TrackingHost.SourcePort = CiValue.PORT
@@ -139,6 +135,7 @@
     Catch ex As Exception
     End Try
   End Sub
+
 
   Public Sub Clear()
     Try

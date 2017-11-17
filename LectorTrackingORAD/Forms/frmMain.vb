@@ -10,7 +10,7 @@ Public Class frmMain
 
   Private frmPiProgress As FormExportProgress
 
-  Private WithEvents CPiSniffer As IpComm.Sniffer
+  Private WithEvents _sniffer As IpComm.Sniffer
 
   Public WithEvents CPuTrackingPlayer As ATrackingPlayer
 
@@ -136,25 +136,25 @@ Public Class frmMain
 
   Private Sub ButtonListen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonListen.Click
     Try
-      If CPiSniffer Is Nothing Then
-        CPiSniffer = New IpComm.Sniffer
-        If CPiSniffer.LlistaInterfaces.Count = 0 Then
+      If _sniffer Is Nothing Then
+        _sniffer = New IpComm.Sniffer
+        If _sniffer.LlistaInterfaces.Count = 0 Then
           MsgBox("Cap interface de xarxa per escoltar")
-          CPiSniffer = Nothing
+          _sniffer = Nothing
         Else
 
           Dim dlg As New DialogInterfaces
-          dlg.LlistaInterfaces = CPiSniffer.LlistaInterfaces
+          dlg.LlistaInterfaces = _sniffer.LlistaInterfaces
           dlg.SelectedInterface = gudtCnfg.SelectedInterface
           dlg.ShowDialog(Me)
-          If dlg.DialogResult = Windows.Forms.DialogResult.OK Then
+          If dlg.DialogResult = DialogResult.OK Then
             gudtCnfg.SelectedInterface = dlg.SelectedInterface
-            CPiSniffer.ShowPort = 0
-            CPiSniffer.ShowProtocol = IpComm.Protocol.UDP
-            CPiSniffer._Parent = Me.PanelCapture
-                        CPiSniffer.StartStop()
-                    Else
-            CPiSniffer = Nothing
+            _sniffer.ShowPort = 0
+            _sniffer.ShowProtocol = IpComm.Protocol.UDP
+            _sniffer._Parent = Me.PanelCapture
+            _sniffer.StartStop()
+          Else
+            _sniffer = Nothing
           End If
         End If
         Me.InitManager()
@@ -165,16 +165,16 @@ Public Class frmMain
         'CPiSniffer.StartStop()
         frmPiSniffer_ListenState(False)
         Me.CPiTrackingSourceManager.Enabled = False
-        CPiSniffer = Nothing
+        _sniffer = Nothing
       End If
 
-        'CPuUDPSniffer = New UDPSniffer(Me.NumericUpDownPort.Value)
+      'CPuUDPSniffer = New UDPSniffer(Me.NumericUpDownPort.Value)
     Catch ex As Exception
 
     End Try
   End Sub
 
-  Private Sub frmPiSniffer_DataArrivalUDP(ByVal data As IpComm.UDPHeader) Handles CPiSniffer.DataArrivalUDP
+  Private Sub frmPiSniffer_DataArrivalUDP(ByVal data As IpComm.UDPHeader) Handles _sniffer.DataArrivalUDP
     Try
       Dim CValor As New TrackingValue(0)
       Dim bRes As Boolean
@@ -251,7 +251,7 @@ Public Class frmMain
     End Try
   End Sub
 
-  Private Sub frmPiSniffer_ListenState(ByVal bListenState As Boolean) Handles CPiSniffer.ListenState
+  Private Sub frmPiSniffer_ListenState(ByVal bListenState As Boolean) Handles _sniffer.ListenState
     If bListenState = True Then
       Me.ButtonListen.Text = "Stop"
       Me.ButtonListen.BackColor = Color.Green
@@ -1390,7 +1390,7 @@ Public Class frmMain
     End If
     dlg.CPuHost = CHost
     dlg.ShowDialog(Me)
-    If dlg.DialogResult = Windows.Forms.DialogResult.OK Then
+    If dlg.DialogResult = DialogResult.OK Then
       CHost = dlg.CPuHost
       If Not CHost Is Nothing Then
         gudtCnfg.Hosts.LlistaHosts.Add(CHost)
@@ -1413,5 +1413,19 @@ Public Class frmMain
 
   Private Sub CheckBoxRender_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxRender.CheckedChanged
 
+  End Sub
+
+  Private Sub ExportarEnFormatGSToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExportarEnFormatGSToolStripMenuItem.Click
+    Try
+      _gsSniffer = New GSSniffer
+      _gsSniffer.StreamsPath = "C:\GELO\GS\"
+      _gsSniffer.TrackingFile = gTrackingFile
+      _gsSniffer.DesarFrameInfoStreams()
+      If Not _gsSniffer Is Nothing Then
+
+      End If
+    Catch ex As Exception
+
+    End Try
   End Sub
 End Class

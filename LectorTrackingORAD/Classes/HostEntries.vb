@@ -16,7 +16,8 @@ Public Class HostEntries
       Next
       If bFound = False Then
         Try
-          sAux = System.Net.Dns.GetHostEntry(siHost).HostName
+          'sAux = System.Net.Dns.GetHostEntry(siHost).HostName
+          sAux = siHost
         Catch ex As Exception
           sAux = siHost
         End Try

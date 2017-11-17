@@ -63,6 +63,7 @@ Partial Class frmMain
     Me.EditarHostToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
     Me.EliminarDeLaLlistaDeHostsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
     Me.Panel1 = New System.Windows.Forms.Panel()
+    Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
     Me.PanelOpenGL = New System.Windows.Forms.Panel()
     Me.ContextMenuStripViewport = New System.Windows.Forms.ContextMenuStrip(Me.components)
     Me.TopToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -74,25 +75,26 @@ Partial Class frmMain
     Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
     Me.PerspectiveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
     Me.TrackBarFrame = New System.Windows.Forms.TrackBar()
+    Me.CheckBoxRender = New System.Windows.Forms.CheckBox()
     Me.TimerFrame = New System.Windows.Forms.Timer(Me.components)
     Me.TimerInitOPENGL = New System.Windows.Forms.Timer(Me.components)
-    Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-    Me.CheckBoxRender = New System.Windows.Forms.CheckBox()
     Me.GLControl1 = New LectorArxiuTrackingORAD.GControlHigh()
+    Me.ExportarEnFormatGSToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
     CType(Me.NumericUpDownPlayerChannel, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.MenuStrip1.SuspendLayout()
     Me.PanelCapture.SuspendLayout()
     Me.PanelRealtime.SuspendLayout()
+    CType(Me.SplitContainerAll, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.SplitContainerAll.Panel1.SuspendLayout()
     Me.SplitContainerAll.Panel2.SuspendLayout()
     Me.SplitContainerAll.SuspendLayout()
     CType(Me.C1FlexGridPorts, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.ContextMenuStripHosts.SuspendLayout()
     Me.Panel1.SuspendLayout()
+    Me.TableLayoutPanel1.SuspendLayout()
     Me.PanelOpenGL.SuspendLayout()
     Me.ContextMenuStripViewport.SuspendLayout()
     CType(Me.TrackBarFrame, System.ComponentModel.ISupportInitialize).BeginInit()
-    Me.TableLayoutPanel1.SuspendLayout()
     Me.SuspendLayout()
     '
     'OpenFileDialog1
@@ -164,7 +166,7 @@ Partial Class frmMain
     '
     'ArxiuToolStripMenuItem
     '
-    Me.ArxiuToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NovaSessióToolStripMenuItem, Me.DesarSessióToolStripMenuItem, Me.CarregarSessióToolStripMenuItem, Me.ToolStripMenuItem3, Me.ImportarToolStripMenuItem, Me.ExportarToolStripMenuItem, Me.ToolStripMenuItem2, Me.OpcionsToolStripMenuItem, Me.VeureSimulacióToolStripMenuItem, Me.ToolStripMenuItem1, Me.TancarToolStripMenuItem})
+    Me.ArxiuToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NovaSessióToolStripMenuItem, Me.DesarSessióToolStripMenuItem, Me.CarregarSessióToolStripMenuItem, Me.ToolStripMenuItem3, Me.ImportarToolStripMenuItem, Me.ExportarToolStripMenuItem, Me.ExportarEnFormatGSToolStripMenuItem, Me.ToolStripMenuItem2, Me.OpcionsToolStripMenuItem, Me.VeureSimulacióToolStripMenuItem, Me.ToolStripMenuItem1, Me.TancarToolStripMenuItem})
     Me.ArxiuToolStripMenuItem.Name = "ArxiuToolStripMenuItem"
     Me.ArxiuToolStripMenuItem.Size = New System.Drawing.Size(46, 20)
     Me.ArxiuToolStripMenuItem.Text = "Arxiu"
@@ -387,6 +389,23 @@ Partial Class frmMain
     Me.Panel1.Size = New System.Drawing.Size(733, 549)
     Me.Panel1.TabIndex = 2
     '
+    'TableLayoutPanel1
+    '
+    Me.TableLayoutPanel1.ColumnCount = 2
+    Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120.0!))
+    Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+    Me.TableLayoutPanel1.Controls.Add(Me.PanelOpenGL, 0, 1)
+    Me.TableLayoutPanel1.Controls.Add(Me.TrackBarFrame, 1, 0)
+    Me.TableLayoutPanel1.Controls.Add(Me.CheckBoxRender, 0, 0)
+    Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+    Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
+    Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+    Me.TableLayoutPanel1.RowCount = 2
+    Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
+    Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+    Me.TableLayoutPanel1.Size = New System.Drawing.Size(733, 549)
+    Me.TableLayoutPanel1.TabIndex = 14
+    '
     'PanelOpenGL
     '
     Me.TableLayoutPanel1.SetColumnSpan(Me.PanelOpenGL, 2)
@@ -463,30 +482,6 @@ Partial Class frmMain
     Me.TrackBarFrame.TickFrequency = 0
     Me.TrackBarFrame.Value = 1000
     '
-    'TimerFrame
-    '
-    Me.TimerFrame.Interval = 40
-    '
-    'TimerInitOPENGL
-    '
-    '
-    'TableLayoutPanel1
-    '
-    Me.TableLayoutPanel1.ColumnCount = 2
-    Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120.0!))
-    Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-    Me.TableLayoutPanel1.Controls.Add(Me.PanelOpenGL, 0, 1)
-    Me.TableLayoutPanel1.Controls.Add(Me.TrackBarFrame, 1, 0)
-    Me.TableLayoutPanel1.Controls.Add(Me.CheckBoxRender, 0, 0)
-    Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-    Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
-    Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-    Me.TableLayoutPanel1.RowCount = 2
-    Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
-    Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-    Me.TableLayoutPanel1.Size = New System.Drawing.Size(733, 549)
-    Me.TableLayoutPanel1.TabIndex = 14
-    '
     'CheckBoxRender
     '
     Me.CheckBoxRender.AutoSize = True
@@ -497,6 +492,13 @@ Partial Class frmMain
     Me.CheckBoxRender.TabIndex = 6
     Me.CheckBoxRender.Text = "Render"
     Me.CheckBoxRender.UseVisualStyleBackColor = True
+    '
+    'TimerFrame
+    '
+    Me.TimerFrame.Interval = 40
+    '
+    'TimerInitOPENGL
+    '
     '
     'GLControl1
     '
@@ -509,6 +511,12 @@ Partial Class frmMain
     Me.GLControl1.Size = New System.Drawing.Size(727, 503)
     Me.GLControl1.TabIndex = 1
     Me.GLControl1.VSync = False
+    '
+    'ExportarEnFormatGSToolStripMenuItem
+    '
+    Me.ExportarEnFormatGSToolStripMenuItem.Name = "ExportarEnFormatGSToolStripMenuItem"
+    Me.ExportarEnFormatGSToolStripMenuItem.Size = New System.Drawing.Size(198, 22)
+    Me.ExportarEnFormatGSToolStripMenuItem.Text = "Exportar en format GS..."
     '
     'frmMain
     '
@@ -531,15 +539,16 @@ Partial Class frmMain
     Me.PanelRealtime.ResumeLayout(False)
     Me.SplitContainerAll.Panel1.ResumeLayout(False)
     Me.SplitContainerAll.Panel2.ResumeLayout(False)
+    CType(Me.SplitContainerAll, System.ComponentModel.ISupportInitialize).EndInit()
     Me.SplitContainerAll.ResumeLayout(False)
     CType(Me.C1FlexGridPorts, System.ComponentModel.ISupportInitialize).EndInit()
     Me.ContextMenuStripHosts.ResumeLayout(False)
     Me.Panel1.ResumeLayout(False)
+    Me.TableLayoutPanel1.ResumeLayout(False)
+    Me.TableLayoutPanel1.PerformLayout()
     Me.PanelOpenGL.ResumeLayout(False)
     Me.ContextMenuStripViewport.ResumeLayout(False)
     CType(Me.TrackBarFrame, System.ComponentModel.ISupportInitialize).EndInit()
-    Me.TableLayoutPanel1.ResumeLayout(False)
-    Me.TableLayoutPanel1.PerformLayout()
     Me.ResumeLayout(False)
     Me.PerformLayout()
 
@@ -599,4 +608,5 @@ Partial Class frmMain
   Friend WithEvents ToolStripMenuItem4 As System.Windows.Forms.ToolStripSeparator
   Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
   Friend WithEvents CheckBoxRender As CheckBox
+  Friend WithEvents ExportarEnFormatGSToolStripMenuItem As ToolStripMenuItem
 End Class

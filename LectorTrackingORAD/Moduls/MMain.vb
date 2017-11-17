@@ -3,6 +3,7 @@ Module MMain
 
   Public gHostEntries As New HostEntries
   Public gTrackingFile As New TrackingFile
+  Public _gsSniffer As GSSniffer
   Public gTrackingRouterManager As New TrackingRouter.TrackingRouterManager
   Public gTrackingPlayerFactory As New TrackingPlayerFactory
 
@@ -79,6 +80,11 @@ Module MMain
     sAux = CStr(CMyRegConfig.ReadValue("TrackingRouterManager", "", CRegConfig.eBrancaReg.brBrancaSistema, False))
     DesserializeObjectFromString(sAux, gTrackingRouterManager, False)
     gTrackingRouterManager.CPuTrackingFile = gTrackingFile
+
+    _gsSniffer = New GSSniffer()
+    _gsSniffer.StreamsPath = "C:\GELO\"
+    _gsSniffer.TrackingFile = gTrackingFile
+
 
     'Paràmetres debug
     MyConfig.LogarErrorsAFitxer = CBool(CMyRegConfig.ReadValue("LogarErrorsAFitxer", True, CRegConfig.eBrancaReg.brBrancaSistema, False))

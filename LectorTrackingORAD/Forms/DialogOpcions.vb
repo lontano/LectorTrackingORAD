@@ -63,7 +63,7 @@ Friend Class DialogOpcions
       Dim dlg As New DialogHost
       dlg.CPuHost = Nothing
       dlg.ShowDialog(Me)
-      If dlg.DialogResult = Windows.Forms.DialogResult.OK Then
+      If dlg.DialogResult = DialogResult.OK Then
         tPuConfiguracio.Hosts.LlistaHosts.Add(dlg.CPuHost)
       End If
 
@@ -127,7 +127,7 @@ Friend Class DialogOpcions
         If Not CHost Is Nothing Then
           dlg.CPuHost = CHost
           dlg.ShowDialog(Me)
-          If dlg.DialogResult = Windows.Forms.DialogResult.OK Then
+          If dlg.DialogResult = DialogResult.OK Then
             'tPuConfiguracio.Hosts.LlistaHosts.Add(dlg.CPuHost)
           End If
         End If

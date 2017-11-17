@@ -13,12 +13,13 @@
     <MyType>WindowsFormsWithCustomSubMain</MyType>
     <ApplicationIcon>Thiago-Silva-Palm-Settings-Location.ico</ApplicationIcon>
     <OptionStrict>Off</OptionStrict>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +32,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <WarningsAsErrors>
     </WarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,6 +45,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <WarningsAsErrors>
     </WarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="C1.Common, Version=1.0.20031.116, Culture=neutral, PublicKeyToken=e272bb32d11b1948">
@@ -53,6 +56,10 @@
     <Reference Include="C1.Win.C1FlexGrid, Version=2.5.20051.200, Culture=neutral, PublicKeyToken=c9c7ad9c0a5706c9">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files\ComponentOne Studio.NET\bin\C1.Win.C1FlexGrid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net20\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
@@ -78,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\HostEntries.vb" />
+    <Compile Include="GS\GSSniffer.vb" />
     <Compile Include="Route\DialogAddPlayer.Designer.vb">
       <DependentUpon>DialogAddPlayer.vb</DependentUpon>
     </Compile>
@@ -296,6 +304,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -305,6 +314,7 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Thiago-Silva-Palm-Settings-Location.ico" />
@@ -321,6 +331,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Sniffer\Form\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GSFilters\GSTools\GSTools.csproj">
+      <Project>{2c72e154-a6f1-4236-9404-5756e5a15325}</Project>
+      <Name>GSTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

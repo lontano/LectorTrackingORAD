@@ -32,7 +32,7 @@ Public Class FormTrackingPlayer
     Dim dlg As New DialogAddSource
     dlg.CPuTrackingFile = gTrackingFile
     dlg.ShowDialog(Me)
-    If dlg.DialogResult = Windows.Forms.DialogResult.OK Then
+    If dlg.DialogResult = DialogResult.OK Then
       For Each CTrackingHost As TrackingHost In dlg.LlistaSelectedHosts
         Me.CPuTrackingRouterManager.CreateRouter(CTrackingHost)
       Next
@@ -132,7 +132,7 @@ Public Class FormTrackingPlayer
       Dim dlg As New DialogAddPlayer
       dlg.CPuPlayerHost = Nothing
       dlg.ShowDialog(Me)
-      If dlg.DialogResult = Windows.Forms.DialogResult.OK Then
+      If dlg.DialogResult = DialogResult.OK Then
         CPiSelectedRoute.AddTrackingPlayerHost(dlg.CPuPlayerHost)
         UpdateRouter()
         DesarConfiguracio(gnNumConfig, gudtCnfg)
@@ -170,7 +170,7 @@ Public Class FormTrackingPlayer
         Dim nIndex As Integer = Me.ListViewPlayers.SelectedIndices(0)
         dlg.CPuPlayerHost = Me.CPiSelectedRoute.TrackingPlayerHosts(nIndex)
         dlg.ShowDialog(Me)
-        If dlg.DialogResult = Windows.Forms.DialogResult.OK Then
+        If dlg.DialogResult = DialogResult.OK Then
           Me.CPiSelectedRoute.TrackingPlayerHosts(nIndex) = dlg.CPuPlayerHost
           UpdateRouter()
           DesarConfiguracio(gnNumConfig, gudtCnfg)
