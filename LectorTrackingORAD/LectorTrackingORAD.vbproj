@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{692CD834-83F7-4D5B-AC1C-92E79F902064}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Sub Main</StartupObject>
+    <RootNamespace>LectorArxiuTrackingORAD</RootNamespace>
+    <AssemblyName>LectorTrackingORAD</AssemblyName>
+    <MyType>WindowsFormsWithCustomSubMain</MyType>
+    <ApplicationIcon>Thiago-Silva-Palm-Settings-Location.ico</ApplicationIcon>
+    <OptionStrict>Off</OptionStrict>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>LectorTrackingORAD.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>LectorTrackingORAD.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="C1.Common, Version=1.0.20031.116, Culture=neutral, PublicKeyToken=e272bb32d11b1948">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\ComponentOne Studio.NET\bin\C1.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="C1.Win.C1FlexGrid, Version=2.5.20051.200, Culture=neutral, PublicKeyToken=c9c7ad9c0a5706c9">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\ComponentOne Studio.NET\bin\C1.Win.C1FlexGrid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
+    <Reference Include="OpenTK.Compatibility, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
+    <Reference Include="OpenTK.GLControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\HostEntries.vb" />
+    <Compile Include="Route\DialogAddPlayer.Designer.vb">
+      <DependentUpon>DialogAddPlayer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Route\DialogAddPlayer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Route\Listener\TrackingListenerTCP_Client.vb" />
+    <Compile Include="Route\Player\TrackingPlayerFactory.vb" />
+    <Compile Include="Route\Player\TrackingPlayerHost.vb" />
+    <Compile Include="Route\Player\TrackingPlayerTCP_Server.vb" />
+    <Compile Include="Route\Player\TrackingPlayerUDP_ORAD.vb" />
+    <Compile Include="Tracking\TrackingHost.vb" />
+    <Compile Include="Tracking\TrackingHosts.vb" />
+    <Compile Include="Tracking\TrackingSourceManager.vb" />
+    <Compile Include="Forms\DialogHost.Designer.vb">
+      <DependentUpon>DialogHost.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DialogHost.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DialogScanPorts.Designer.vb">
+      <DependentUpon>DialogScanPorts.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DialogScanPorts.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Route\DialogAddSource.Designer.vb">
+      <DependentUpon>DialogAddSource.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Route\DialogAddSource.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Route\Listener\ATrackingListener.vb" />
+    <Compile Include="Route\Player\ATrackingPlayer.vb" />
+    <Compile Include="FBX\FBXLookAt.vb" />
+    <Compile Include="Route\FormTrackingPlayer.Designer.vb">
+      <DependentUpon>FormTrackingPlayer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Route\FormTrackingPlayer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Moduls\MFunctions.vb" />
+    <Compile Include="Paint3D\Sphere.vb" />
+    <Compile Include="Route\Listener\TrackingListenerTCP_Server.vb" />
+    <Compile Include="Route\Listener\TrackingListenerUDP.vb" />
+    <Compile Include="Route\Listener\TrackingListenerUDP_adv.vb" />
+    <Compile Include="Route\Player\TrackingPlayerTCP_Client.vb" />
+    <Compile Include="Route\Player\TrackingPlayerU.vb" />
+    <Compile Include="Route\Router\TrackingRouter.vb" />
+    <Compile Include="Route\Router\TrackingRouterManager.vb" />
+    <Compile Include="Route\Player\TrackinPlayerUDP.vb" />
+    <Compile Include="UserControls\CameraViewport.Designer.vb">
+      <DependentUpon>CameraViewport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CameraViewport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Exporter\CCameraColladaExporter.vb" />
+    <Compile Include="Exporter\CCameraFBXExporter.vb" />
+    <Compile Include="Exporter\CCameraMAYAExporter.vb" />
+    <Compile Include="Exporter\CCameraVRMLExporter.vb" />
+    <Compile Include="Exporter\CCameraX3DExporter.vb" />
+    <Compile Include="Exporter\CFileExporter.vb" />
+    <Compile Include="Classes\CRegConfig.vb" />
+    <Compile Include="Tracking\TrackingFile.vb" />
+    <Compile Include="Tracking\TrackingValue.vb" />
+    <Compile Include="Classes\UDPConnector.vb" />
+    <Compile Include="Classes\IExporter.vb" />
+    <Compile Include="Classes\MOrient.vb" />
+    <Compile Include="Classes\myStreamReader.vb" />
+    <Compile Include="Collada\Collada.vb" />
+    <Compile Include="Tracking\TrackingSource.vb" />
+    <Compile Include="Classes\UDPSniffer.vb" />
+    <Compile Include="FBX\FBXChannel.vb" />
+    <Compile Include="FBX\FBXConnections.vb" />
+    <Compile Include="FBX\FBXDefinitions.vb" />
+    <Compile Include="FBX\FBXDocument.vb" />
+    <Compile Include="FBX\FBXFile.vb" />
+    <Compile Include="FBX\FBXGlobalSettings.vb" />
+    <Compile Include="FBX\FBXHeader.vb" />
+    <Compile Include="FBX\FBXKey.vb" />
+    <Compile Include="FBX\FBXCamera.vb" />
+    <Compile Include="FBX\FBXModels.vb" />
+    <Compile Include="FBX\FBXProperty.vb" />
+    <Compile Include="FBX\FBXReferences.vb" />
+    <Compile Include="FBX\FBXSceneInfo.vb" />
+    <Compile Include="FBX\FBXTake.vb" />
+    <Compile Include="FBX\FBXTakeModel.vb" />
+    <Compile Include="FBX\FBXTakes.vb" />
+    <Compile Include="FBX\FBXValue.vb" />
+    <Compile Include="Forms\DialogInterfaces.Designer.vb">
+      <DependentUpon>DialogInterfaces.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DialogInterfaces.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DialogOpcions.Designer.vb">
+      <DependentUpon>DialogOpcions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DialogOpcions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormExportProgress.Designer.vb">
+      <DependentUpon>FormExportProgress.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormExportProgress.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmMain.Designer.vb">
+      <DependentUpon>frmMain.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmPackets.Designer.vb">
+      <DependentUpon>frmPackets.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmPackets.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Moduls\MMain.vb" />
+    <Compile Include="Moduls\MSerialize.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Paint3D\frmDraw.Designer.vb">
+      <DependentUpon>frmDraw.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Paint3D\frmDraw.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Paint3D\Point3D.vb" />
+    <Compile Include="Classes\UDPPlayer.vb" />
+    <Compile Include="Sniffer\Classes\CSniffer.vb">
+    </Compile>
+    <Compile Include="Sniffer\Classes\DNSHeader.vb" />
+    <Compile Include="Sniffer\Classes\IPHeader.vb" />
+    <Compile Include="Sniffer\Classes\TCPHeader.vb" />
+    <Compile Include="Sniffer\Classes\UDPHeader.vb" />
+    <Compile Include="UserControls\GControlHigh.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\DialogHost.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DialogHost.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DialogScanPorts.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DialogScanPorts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Route\DialogAddPlayer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DialogAddPlayer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Route\DialogAddSource.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DialogAddSource.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Route\FormTrackingPlayer.resx">
+      <DependentUpon>FormTrackingPlayer.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\CameraViewport.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CameraViewport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DialogInterfaces.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DialogInterfaces.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DialogOpcions.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DialogOpcions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormExportProgress.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormExportProgress.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmMain.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmPackets.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmPackets.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Paint3D\frmDraw.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmDraw.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\GControlHigh.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>GControlHigh.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Thiago-Silva-Palm-Settings-Location.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Sniffer\Form\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
