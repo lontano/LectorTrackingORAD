@@ -315,61 +315,13 @@ Public Class frmMain
     End Try
   End Sub
 
-  Private Sub ExportarToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExportarToolStripMenuItem.Click
-    Try
-      Static sExportFile As String = ""
-      Me.SaveFileDialog1.Filter = "FBX|*.FBX|VRML|*.WRL|All files|*.*"
-      Me.SaveFileDialog1.FileName = sExportFile
-      Me.SaveFileDialog1.ShowDialog()
-
-
-
-
-      If Me.SaveFileDialog1.FileNames.Length > 0 Then
-        sExportFile = Me.SaveFileDialog1.FileName
-
-        frmPiProgress = New FormExportProgress
-
-
-        Dim CExport As IExporter
-        Me.Cursor = Cursors.WaitCursor
-        Select Case System.IO.Path.GetExtension(sExportFile).ToUpper
-          Case ".DAE"
-            CExport = New CCameraColladaExporter()
-          Case ".FBX"
-            CExport = New CameraFBXExporter()
-          Case Else
-            CExport = New CameraVRMLExporter()
-        End Select
-
-        frmPiProgress.Text = "Export"
-        frmPiProgress.Show(Me)
-
-        AddHandler CExport.UpdateProgress, AddressOf Me.IPiCameraExporter_UpdateProgress
-
-
-        Dim LlistaValors As List(Of TrackingValue) = gTrackingFile.TrackingValuesByPort(0)
-
-        CExport.Export(gTrackingFile, sExportFile, -1)
-        'CExport.Export(LlistaValors, -1)
-      End If
-
-
-    Catch ex As Exception
-
-    End Try
-    frmPiProgress.Close()
-    frmPiProgress = Nothing
-    Me.Cursor = Cursors.Default
-  End Sub
-
   Private Sub ArxiuPathDORADToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ArxiuPathDORADToolStripMenuItem.Click
     Try
       Dim sImportFile As String
-      Me.OpenFileDialog1.ShowDialog()
-      sImportFile = Me.OpenFileDialog1.FileName
+      Me.OpenFileDialogImportar.ShowDialog()
+      sImportFile = Me.OpenFileDialogImportar.FileName
 
-      gTrackingFile = New TrackingFile(sImportFile, (System.IO.Path.GetExtension(Me.OpenFileDialog1.FileName).ToLower = ".path"))
+      gTrackingFile = New TrackingFile(sImportFile, (System.IO.Path.GetExtension(Me.OpenFileDialogImportar.FileName).ToLower = ".path"))
       MostrarValors(True)
     Catch ex As Exception
 
@@ -415,16 +367,16 @@ Public Class frmMain
 
   Private Sub CarregarSessióToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CarregarSessióToolStripMenuItem.Click
     Try
-      Me.OpenFileDialog1.Filter = "Tracking sessions|*.trs|All files|*.*"
-      Me.OpenFileDialog1.CheckPathExists = True
-      Me.OpenFileDialog1.AutoUpgradeEnabled = True
-      Me.OpenFileDialog1.Multiselect = False
-      Me.OpenFileDialog1.ShowDialog()
+      Me.OpenFileDialogImportar.Filter = "Tracking sessions|*.trs|All files|*.*"
+      Me.OpenFileDialogImportar.CheckPathExists = True
+      Me.OpenFileDialogImportar.AutoUpgradeEnabled = True
+      Me.OpenFileDialogImportar.Multiselect = False
+      Me.OpenFileDialogImportar.ShowDialog()
 
-      If Me.OpenFileDialog1.FileName <> "" Then
+      If Me.OpenFileDialogImportar.FileName <> "" Then
         Me.Cursor = Cursors.WaitCursor
         If gTrackingFile Is Nothing Then gTrackingFile = New TrackingFile("", False)
-        DesserializeObjectFromFile(Me.OpenFileDialog1.FileName, gTrackingFile, False)
+        DesserializeObjectFromFile(Me.OpenFileDialogImportar.FileName, gTrackingFile, False)
         If Not Me.frmPiPackets Is Nothing Then Me.frmPiPackets.CPuTrackingFile = gTrackingFile
         For Each CValue As TrackingValue In gTrackingFile.TrackingValues
           CValue.UpdateRadianValues()
@@ -497,7 +449,7 @@ Public Class frmMain
       bRes = True
       Me.TimerFrame.Enabled = True
     Catch ex As Exception
-      MsgBox(ex.ToString)
+      'MsgBox(ex.ToString)
     End Try
     Return bRes
   End Function
@@ -546,7 +498,7 @@ Public Class frmMain
       If Me.LiveUpdate Then
         sTitle = sTitle & "[Live] "
       Else
-        sTitle = sTitle & "[" & msToTimeCode(Me.CurrentTime - Me.InitTime) & "] "
+        sTitle = sTitle & "[" & msToTimeCode(Me.CurrentTime - Me.InitTime) & "] " & (Me.CurrentTime)
       End If
       Me.LlistaTextos.Add(sTitle)
       If Not gTrackingFile Is Nothing Then
@@ -567,7 +519,8 @@ Public Class frmMain
             Dim CSphere As New Sphere
             CSphere.DrawSphere(New OpenTK.Vector3(.TARGET_X, .TARGET_Y, .TARGET_Z), 0.1, 32)
 
-            Me.LlistaTextos.Add(CSource.Host & " frame " & .Index)
+            Me.LlistaTextos.Add(CSource.Host & " " & CSource.TrackingHost.IP)
+            Me.LlistaTextos.Add("Frame " & .Index & " " & .Frame)
             Me.LlistaTextos.Add("Pos" & vbTab & Format(CValue.POS_X, "0.000") & vbTab & Format(CValue.POS_Y, "0.000") & vbTab & Format(CValue.POS_Z, "0.000"))
             Me.LlistaTextos.Add("Target" & vbTab & Format(CValue.TARGET_X, "0.000") & vbTab & Format(CValue.TARGET_Y, "0.000") & vbTab & Format(CValue.TARGET_Z, "0.000"))
             Me.LlistaTextos.Add("Rot" & vbTab & Format(180 * CValue.ROT_X / System.Math.PI, "0.0") & vbTab & Format(180 * CValue.ROT_Y / System.Math.PI, "0.0") & vbTab & Format(180 * CValue.ROT_Z / System.Math.PI, "0.0"))
@@ -1286,16 +1239,16 @@ Public Class frmMain
     End If
     g.Dispose()
 
-    Dim data As System.Drawing.Imaging.BitmapData = bmp.LockBits(New Rectangle(0, 0, bmp.Width, bmp.Height), _
-                                            System.Drawing.Imaging.ImageLockMode.ReadOnly, _
+    Dim data As System.Drawing.Imaging.BitmapData = bmp.LockBits(New Rectangle(0, 0, bmp.Width, bmp.Height),
+                                            System.Drawing.Imaging.ImageLockMode.ReadOnly,
                                             System.Drawing.Imaging.PixelFormat.Format32bppArgb)
 
     If Not GL.IsTexture(textureId) Then
       GL.BindTexture(TextureTarget.Texture2D, textureId)
     End If
 
-    GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, _
-                  bmp.Width, bmp.Height, 0, PixelFormat.Bgra, _
+    GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba,
+                  bmp.Width, bmp.Height, 0, PixelFormat.Bgra,
                   PixelType.UnsignedByte, data.Scan0)
 
     bmp.UnlockBits(data)
@@ -1415,15 +1368,122 @@ Public Class frmMain
 
   End Sub
 
-  Private Sub ExportarEnFormatGSToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExportarEnFormatGSToolStripMenuItem.Click
-    Try
-      _gsSniffer = New GSSniffer
-      _gsSniffer.StreamsPath = "C:\GELO\GS\"
-      _gsSniffer.TrackingFile = gTrackingFile
-      _gsSniffer.DesarFrameInfoStreams()
-      If Not _gsSniffer Is Nothing Then
+  Private Sub ButtonSetInitPosition_Click(sender As Object, e As EventArgs) Handles ButtonSetInitPosition.Click
+    Me.LabelInitPosition.Text = Me.CurrentTime.ToString
+  End Sub
 
+  Private Sub ButtonSetOutPosition_Click(sender As Object, e As EventArgs) Handles ButtonSetOutPosition.Click
+    Me.LabelOutPosition.Text = Me.CurrentTime.ToString
+  End Sub
+
+  Private Sub ExportarEnFormatGSToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ExportarEnFormatGSToolStripMenuItem1.Click
+    Try
+      Try
+        Me.SaveFileDialogExportGS.Filter = "Format GS json|*.json|All files|*.*"
+        Me.SaveFileDialogExportGS.CheckPathExists = True
+        Me.SaveFileDialogExportGS.AutoUpgradeEnabled = True
+        Me.SaveFileDialogExportGS.ShowDialog()
+
+        If Me.SaveFileDialogExportGS.FileName <> "" Then
+          If Not gTrackingFile Is Nothing Then
+            _gsSniffer = New GSSniffer
+            _gsSniffer.StreamsPath = Me.SaveFileDialogExportGS.FileName
+            Double.TryParse(Me.LabelInitPosition.Text, _gsSniffer.InitPosition)
+            Double.TryParse(Me.LabelOutPosition.Text, _gsSniffer.FinalPosition)
+            _gsSniffer.TrackingFile = gTrackingFile
+            _gsSniffer.DesarFrameInfoStreams()
+
+            gTrackingFile = New TrackingFile
+            gTrackingFile = _gsSniffer.ExportarTrackingFile()
+
+            If Not Me.frmPiPackets Is Nothing Then Me.frmPiPackets.CPuTrackingFile = gTrackingFile
+            For Each CValue As TrackingValue In gTrackingFile.TrackingValues
+              CValue.UpdateRadianValues()
+            Next
+            Me.MostrarValors(True)
+          End If
+        End If
+      Catch ex As Exception
+
+      End Try
+
+
+    Catch ex As Exception
+
+    End Try
+  End Sub
+
+  Private Sub ExportarToolStripMenuItem2_Click(sender As Object, e As EventArgs) Handles ExportarToolStripMenuItem2.Click
+    Try
+      Static sExportFile As String = ""
+      Me.SaveFileDialog1.Filter = "FBX|*.FBX|VRML|*.WRL|All files|*.*"
+      Me.SaveFileDialog1.FileName = sExportFile
+      Me.SaveFileDialog1.ShowDialog()
+
+
+
+
+      If Me.SaveFileDialog1.FileNames.Length > 0 Then
+        sExportFile = Me.SaveFileDialog1.FileName
+
+        frmPiProgress = New FormExportProgress
+
+
+        Dim CExport As IExporter
+        Me.Cursor = Cursors.WaitCursor
+        Select Case System.IO.Path.GetExtension(sExportFile).ToUpper
+          Case ".DAE"
+            CExport = New CCameraColladaExporter()
+          Case ".FBX"
+            CExport = New CameraFBXExporter()
+          Case Else
+            CExport = New CameraVRMLExporter()
+        End Select
+
+        frmPiProgress.Text = "Export"
+        frmPiProgress.Show(Me)
+
+        AddHandler CExport.UpdateProgress, AddressOf Me.IPiCameraExporter_UpdateProgress
+
+
+        Dim LlistaValors As List(Of TrackingValue) = gTrackingFile.TrackingValuesByPort(0)
+
+        CExport.Export(gTrackingFile, sExportFile, -1)
+        'CExport.Export(LlistaValors, -1)
       End If
+
+
+    Catch ex As Exception
+
+    End Try
+    frmPiProgress.Close()
+    frmPiProgress = Nothing
+    Me.Cursor = Cursors.Default
+  End Sub
+
+  Private Sub ArxiuEnFormatGSToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ArxiuEnFormatGSToolStripMenuItem.Click
+    Try
+      Try
+        Dim sImportFile As String
+        Me.OpenFileDialogImportarGS.ShowDialog()
+        sImportFile = Me.OpenFileDialogImportarGS.FileName
+
+        _gsSniffer.CarregarFrameInfoStreams(sImportFile)
+
+      Catch ex As Exception
+
+      End Try
+
+      gTrackingFile = New TrackingFile
+      gTrackingFile = _gsSniffer.ExportarTrackingFile()
+
+      If Not Me.frmPiPackets Is Nothing Then Me.frmPiPackets.CPuTrackingFile = gTrackingFile
+      For Each CValue As TrackingValue In gTrackingFile.TrackingValues
+        CValue.UpdateRadianValues()
+      Next
+      OnUpdateScroll()
+      Me.MostrarValors(True)
+
     Catch ex As Exception
 
     End Try

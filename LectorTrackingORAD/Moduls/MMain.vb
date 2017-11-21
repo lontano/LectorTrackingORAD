@@ -7,7 +7,6 @@ Module MMain
   Public gTrackingRouterManager As New TrackingRouter.TrackingRouterManager
   Public gTrackingPlayerFactory As New TrackingPlayerFactory
 
-
   Public Structure Configuracio
     Public Hosts As TrackingHosts
     Public UseHosts As Boolean

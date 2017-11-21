@@ -16,6 +16,11 @@ Public Class GSSniffer
     End Set
   End Property
 
+
+  Public InitPosition As Double = -1
+  Public FinalPosition As Double = -1
+
+  Private _frameInfoStream As GSTools.FrameInfoStream
   Private _frameInfoStreams As New Dictionary(Of String, GSTools.FrameInfoStream)
 
   Private _streamsPath As String = "C:\GELO\"
@@ -25,22 +30,117 @@ Public Class GSSniffer
     End Get
     Set(value As String)
       _streamsPath = value
-      Try
-        System.IO.Directory.CreateDirectory(value)
-      Catch ex As Exception
-
-      End Try
     End Set
   End Property
 
+  Public Function ExportarTrackingFile() As TrackingFile
+    Dim res As New TrackingFile
+    Try
+      res.InitTickTimeMS = Double.MaxValue
+      res.LastTickTimeMS = Double.MinValue
+
+      For Each kvp As KeyValuePair(Of String, FrameInfoStream) In _frameInfoStreams
+        Dim v1 As String = kvp.Key
+        Dim fis As FrameInfoStream = kvp.Value
+
+        Dim src As New TrackingSource
+
+        src.Host = fis.Host
+        src.Port = fis.Port
+
+        src.TrackingHost = New TrackingHost
+        src.TrackingHost.Host = fis.Host
+        src.TrackingHost.IP = fis.IP
+        src.TrackingHost.SourcePort = fis.Port
+        src.TrackingHost.TargetPort = fis.Port
+
+
+        res.TrackingSources.Add(src)
+
+        For Each fi As FrameInfo In fis.LlistaFrameInfo
+          Dim value As New TrackingValue
+          value.CAM_NUM = fis.Index
+          value.FOV = fi.CameraParameters.fov
+          value.POS_X = fi.CameraParameters.x
+          value.POS_Y = fi.CameraParameters.y
+          value.POS_Z = fi.CameraParameters.z
+          value.ROT_X = fi.CameraParameters.tilt
+          value.ROT_Y = fi.CameraParameters.pan
+          value.ROT_Z = fi.CameraParameters.roll
+          value.TARGET_X = fi.CameraParameters.lookAtX
+          value.TARGET_Y = fi.CameraParameters.lookAtY
+          value.TARGET_Z = fi.CameraParameters.lookAtZ
+          value.ASPECT = 16 / 9
+          value.FOV_RAD = value.FOV
+          value.HOST = fis.Name
+          value.CapturedMS = fi.CameraParameters.CapturedMS
+
+          value.UpdateRadianValues()
+
+          value.CapturedMS = fi.ClockMs
+          src.TrackingValues.Add(value)
+
+          res.InitTickTimeMS = Math.Min(res.InitTickTimeMS, value.CapturedMS)
+          res.LastTickTimeMS = Math.Max(res.LastTickTimeMS, value.CapturedMS)
+        Next
+      Next
+
+    Catch ex As Exception
+
+    End Try
+    Return res
+  End Function
+
   Private Sub ImportTrackingFile()
     Try
+      Dim lastMs As Double = 0
       If Not _trackingFile Is Nothing Then
-        For Each src As TrackingSource In _trackingFile.SelectedSources
-          For Each value As TrackingValue In src.TrackingValues
-            Me.AddTrackingValueToStream(value, False)
+        _frameInfoStream = New FrameInfoStream
+        _frameInfoStream.Name = System.IO.Path.GetFileNameWithoutExtension(_trackingFile.Path)
+        'a saco
+        Dim aSaco As Boolean = True
+        If aSaco Then
+          For Each src As TrackingSource In _trackingFile.SelectedSources
+            For Each value As TrackingValue In src.TrackingValues
+              Dim bAdd As Boolean = True
+              If Me.InitPosition <> Me.FinalPosition Then
+                bAdd = (value.CapturedMS >= Me.InitPosition And value.CapturedMS <= Me.FinalPosition)
+              End If
+              If bAdd Then Me.AddTrackingValueToStream(value, False)
+
+              lastMs = value.CapturedMS
+            Next
           Next
-        Next
+        Else
+          'a ver, un poco más inteligente
+          Dim initValueTime As Double = Double.MaxValue
+          Dim endValueTime As Double = Double.MinValue
+
+          For Each src As TrackingSource In _trackingFile.SelectedSources
+            For Each value As TrackingValue In src.TrackingValues
+              initValueTime = Math.Min(initValueTime, value.CapturedMS)
+              endValueTime = Math.Max(endValueTime, value.CapturedMS)
+            Next
+          Next
+
+          If Me.InitPosition <> Me.FinalPosition Then
+            initValueTime = Me.InitPosition
+            endValueTime = Me.FinalPosition
+          End If
+
+          For Each src As TrackingSource In _trackingFile.SelectedSources
+            If src.Selected Then
+              Dim msPerFrame As Double = 40
+              For time As Double = initValueTime To endValueTime Step msPerFrame
+                Dim value As TrackingValue = src.GetValueByTime(time, 0, False)
+                If Not value Is Nothing Then
+                  Me.AddTrackingValueToStream(value, False)
+                  lastMs = value.CapturedMS
+                End If
+              Next
+            End If
+          Next
+        End If
       End If
     Catch ex As Exception
 
@@ -49,12 +149,46 @@ Public Class GSSniffer
 
   Public Sub DesarFrameInfoStreams()
     Try
+      Me.UpdateFrameInfoCollectionFile(_frameInfoStream, Me.StreamsPath)
+      For Each kvp As KeyValuePair(Of String, FrameInfoStream) In _frameInfoStreams
+        Dim v1 As String = kvp.Key
+        Dim fis As FrameInfoStream = kvp.Value
+
+        Dim file As String = System.IO.Path.GetDirectoryName(Me.StreamsPath)
+        file = System.IO.Path.Combine(file, System.IO.Path.GetFileNameWithoutExtension(Me.StreamsPath))
+        file = System.IO.Path.Combine(file, fis.Name & ".json")
+
+        Me.UpdateFrameInfoCollectionFile(fis, file)
+      Next
+
+      'Crear el frameInfo amb tots els valors
+      _frameInfoStream.Name = System.IO.Path.GetFileNameWithoutExtension(_gsSniffer.StreamsPath)
+      _frameInfoStream.LlistaFrameInfo.Clear()
+      Dim channelIndex As Integer = 0
       For Each kvp As KeyValuePair(Of String, FrameInfoStream) In _frameInfoStreams
         Dim v1 As String = kvp.Key
         Dim v2 As FrameInfoStream = kvp.Value
-
-        Me.UpdateFrameInfoCollectionFile(v2)
+        For i As Integer = 0 To _frameInfoStream.LlistaFrameInfo.Count - 1
+          Dim fi As FrameInfo = v2.GetFrameInfoByFrameNumber(i)
+          _frameInfoStream.LlistaFrameInfo(i).SetCameraParametersForChannel(channelIndex, fi.CameraParameters)
+        Next
+        For i As Integer = _frameInfoStream.LlistaFrameInfo.Count To v2.LlistaFrameInfo.Count - 1
+          Dim fi As FrameInfo = v2.GetFrameInfoByFrameNumber(i)
+          While _frameInfoStream.LlistaFrameInfo.Count <= i
+            Dim newFI As New FrameInfo
+            newFI.FrameNumber = _frameInfoStream.LlistaFrameInfo.Count
+            newFI.ClockMs = fi.ClockMs
+            newFI.InfoText = fi.InfoText
+            newFI.OpticCodeInfo = fi.OpticCodeInfo
+            newFI.CameraParameters = fi.CameraParameters
+            newFI.ActiveChannel = channelIndex
+            _frameInfoStream.LlistaFrameInfo.Add(newFI)
+          End While
+          _frameInfoStream.LlistaFrameInfo(i).SetCameraParametersForChannel(channelIndex, fi.CameraParameters)
+        Next
+        channelIndex += 1
       Next
+      Me.UpdateFrameInfoCollectionFile(_frameInfoStream, Me.StreamsPath)
     Catch ex As Exception
 
     End Try
@@ -75,6 +209,10 @@ Public Class GSSniffer
       If Not _frameInfoStreams.ContainsKey(sTFId) Then
         tf = New GSTools.FrameInfoStream()
         tf.Name = sTFId
+        tf.Index = _frameInfoStreams.Count
+        tf.Host = CiTrackingValue.HOST
+        tf.IP = CiTrackingValue.HOST
+        tf.Port = CiTrackingValue.PORT
         _frameInfoStreams.Add(sTFId, tf)
       Else
         tf = _frameInfoStreams.Item(sTFId)
@@ -82,9 +220,12 @@ Public Class GSSniffer
 
       Dim frameInfo As New GSTools.FrameInfo
       frameInfo.ClockMs = CiTrackingValue.CapturedMS
+      frameInfo.InfoText = sTFId
 
       frameInfo.FrameNumber = tf.LlistaFrameInfo.Count
       frameInfo.CameraParameters = New GSTools.FrameTools.CameraParameters()
+      frameInfo.CameraParameters.CapturedMS = frameInfo.ClockMs
+
       frameInfo.CameraParameters.fov = CiTrackingValue.FOV
       frameInfo.CameraParameters.x = CiTrackingValue.POS_X
       frameInfo.CameraParameters.y = CiTrackingValue.POS_Y
@@ -96,10 +237,64 @@ Public Class GSSniffer
       frameInfo.CameraParameters.pan = CiTrackingValue.ROT_Y
       frameInfo.CameraParameters.roll = CiTrackingValue.ROT_Z
 
+      frameInfo.CameraParameters.Host = CiTrackingValue.HOST
+      frameInfo.CameraParameters.IP = CiTrackingValue.IP
+      frameInfo.CameraParameters.Port = CiTrackingValue.PORT
+
+
       tf.AddFrameInfo(frameInfo, False)
       If saveFile Then
-        UpdateFrameInfoCollectionFile(tf, frameInfo)
+        'UpdateFrameInfoCollectionFile(tf,  frameInfo)
       End If
+    Catch ex As Exception
+
+    End Try
+
+  End Sub
+
+
+  Private Sub AddTrackingValueToStream(cameraParameters As GSTools.FrameTools.CameraParameters, Optional saveFile As Boolean = False)
+    Try
+      Dim sTFId As String = cameraParameters.Host & "@" & cameraParameters.Port
+      Dim tf As GSTools.FrameInfoStream = Nothing
+
+      If Not _frameInfoStreams.ContainsKey(sTFId) Then
+        tf = New GSTools.FrameInfoStream()
+        tf.Name = sTFId
+        tf.Index = _frameInfoStreams.Count
+        tf.Host = cameraParameters.Host
+        tf.IP = cameraParameters.Host
+        tf.Port = cameraParameters.Port
+        _frameInfoStreams.Add(sTFId, tf)
+      Else
+        tf = _frameInfoStreams.Item(sTFId)
+      End If
+
+      Dim frameInfo As New GSTools.FrameInfo
+      frameInfo.ClockMs = cameraParameters.CapturedMS
+      frameInfo.InfoText = sTFId
+
+      frameInfo.FrameNumber = tf.LlistaFrameInfo.Count
+      frameInfo.CameraParameters = cameraParameters
+
+      tf.AddFrameInfo(frameInfo, False)
+      If saveFile Then
+        ' UpdateFrameInfoCollectionFile(tf, frameInfo)
+      End If
+    Catch ex As Exception
+
+    End Try
+  End Sub
+
+  Private Sub AddTrackingValueToStream(frameInfo As FrameInfo, Optional saveFile As Boolean = False)
+    Try
+      Dim sTFId As String = frameInfo.InfoText
+      Dim tf As GSTools.FrameInfoStream = Nothing
+
+      For i As Integer = 0 To frameInfo.CameraParameterChannels.Count - 1
+        Me.AddTrackingValueToStream(frameInfo.CameraParameterChannels(i), saveFile)
+      Next
+
     Catch ex As Exception
 
     End Try
@@ -111,14 +306,12 @@ Public Class GSSniffer
 
 #Region "Chan bridge file"
 
-  Private Sub UpdateFrameInfoCollectionFile(frameInfoStream As FrameInfoStream)
-    Me.UpdateFrameInfoCollectionFile(frameInfoStream, Nothing)
+  Private Sub UpdateFrameInfoCollectionFile(frameInfoStream As FrameInfoStream, fileName As String)
+    Me.UpdateFrameInfoCollectionFile(frameInfoStream, Nothing, fileName)
   End Sub
   'save FrameInfoCollection file
-  Private Sub UpdateFrameInfoCollectionFile(frameInfoStream As FrameInfoStream, frameInfo As FrameInfo)
+  Private Sub UpdateFrameInfoCollectionFile(frameInfoStream As FrameInfoStream, frameInfo As FrameInfo, file As String)
     Try
-      Dim file As String = System.IO.Path.Combine(Me.StreamsPath, frameInfoStream.Name & ".json")
-
       'Static busy As Boolean = False
       'If Not busy Then
       ' busy = True
@@ -209,7 +402,18 @@ Public Class GSSniffer
     End If
   End Sub
 
+  Public Sub CarregarFrameInfoStreams(file As String)
+    Try
+      _frameInfoStream = FrameInfoStream.DecodeFromString(LoadStringFromFile(file))
+      If Not _frameInfoStream Is Nothing Then
+        For Each fi As FrameInfo In _frameInfoStream.LlistaFrameInfo
+          Me.AddTrackingValueToStream(fi, False)
+        Next
+      End If
+    Catch ex As Exception
 
+    End Try
+  End Sub
 #End Region
 
 #Region "Load /  save file"
@@ -217,6 +421,10 @@ Public Class GSSniffer
 
     Dim bRes As Boolean = False
     Try
+      Dim sDirectory = System.IO.Path.GetDirectoryName(siFile)
+      If Not System.IO.Directory.Exists(sDirectory) Then
+        System.IO.Directory.CreateDirectory(sDirectory)
+      End If
       Dim myFileStream As FileStream = File.Create(siFile)
       Dim bytes() As Byte
       bytes = System.Text.Encoding.UTF8.GetBytes(siData)

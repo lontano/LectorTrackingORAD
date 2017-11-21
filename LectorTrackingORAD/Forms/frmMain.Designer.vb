@@ -24,7 +24,7 @@ Partial Class frmMain
   Private Sub InitializeComponent()
     Me.components = New System.ComponentModel.Container()
     Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-    Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+    Me.OpenFileDialogImportar = New System.Windows.Forms.OpenFileDialog()
     Me.ButtonClear = New System.Windows.Forms.Button()
     Me.ButtonListen = New System.Windows.Forms.Button()
     Me.NumericUpDownPlayerChannel = New System.Windows.Forms.NumericUpDown()
@@ -39,7 +39,10 @@ Partial Class frmMain
     Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripSeparator()
     Me.ImportarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
     Me.ArxiuPathDORADToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-    Me.ExportarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+    Me.ArxiuEnFormatGSToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+    Me.ExportarToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+    Me.ExportarToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
+    Me.ExportarEnFormatGSToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
     Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator()
     Me.OpcionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
     Me.VeureSimulacióToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -76,10 +79,17 @@ Partial Class frmMain
     Me.PerspectiveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
     Me.TrackBarFrame = New System.Windows.Forms.TrackBar()
     Me.CheckBoxRender = New System.Windows.Forms.CheckBox()
+    Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+    Me.ButtonSetInitPosition = New System.Windows.Forms.Button()
+    Me.ButtonSetOutPosition = New System.Windows.Forms.Button()
+    Me.LabelInitPosition = New System.Windows.Forms.Label()
+    Me.LabelOutPosition = New System.Windows.Forms.Label()
+    Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
     Me.TimerFrame = New System.Windows.Forms.Timer(Me.components)
     Me.TimerInitOPENGL = New System.Windows.Forms.Timer(Me.components)
+    Me.OpenFileDialogImportarGS = New System.Windows.Forms.OpenFileDialog()
     Me.GLControl1 = New LectorArxiuTrackingORAD.GControlHigh()
-    Me.ExportarEnFormatGSToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+    Me.SaveFileDialogExportGS = New System.Windows.Forms.SaveFileDialog()
     CType(Me.NumericUpDownPlayerChannel, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.MenuStrip1.SuspendLayout()
     Me.PanelCapture.SuspendLayout()
@@ -95,12 +105,14 @@ Partial Class frmMain
     Me.PanelOpenGL.SuspendLayout()
     Me.ContextMenuStripViewport.SuspendLayout()
     CType(Me.TrackBarFrame, System.ComponentModel.ISupportInitialize).BeginInit()
+    Me.TableLayoutPanel2.SuspendLayout()
+    CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.SuspendLayout()
     '
-    'OpenFileDialog1
+    'OpenFileDialogImportar
     '
-    Me.OpenFileDialog1.FileName = "OpenFileDialog1"
-    Me.OpenFileDialog1.Filter = "path files|*.path|all files|*.*"
+    Me.OpenFileDialogImportar.FileName = "OpenFileDialog1"
+    Me.OpenFileDialogImportar.Filter = "path files|*.path|all files|*.*"
     '
     'ButtonClear
     '
@@ -166,7 +178,7 @@ Partial Class frmMain
     '
     'ArxiuToolStripMenuItem
     '
-    Me.ArxiuToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NovaSessióToolStripMenuItem, Me.DesarSessióToolStripMenuItem, Me.CarregarSessióToolStripMenuItem, Me.ToolStripMenuItem3, Me.ImportarToolStripMenuItem, Me.ExportarToolStripMenuItem, Me.ExportarEnFormatGSToolStripMenuItem, Me.ToolStripMenuItem2, Me.OpcionsToolStripMenuItem, Me.VeureSimulacióToolStripMenuItem, Me.ToolStripMenuItem1, Me.TancarToolStripMenuItem})
+    Me.ArxiuToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NovaSessióToolStripMenuItem, Me.DesarSessióToolStripMenuItem, Me.CarregarSessióToolStripMenuItem, Me.ToolStripMenuItem3, Me.ImportarToolStripMenuItem, Me.ExportarToolStripMenuItem1, Me.ToolStripMenuItem2, Me.OpcionsToolStripMenuItem, Me.VeureSimulacióToolStripMenuItem, Me.ToolStripMenuItem1, Me.TancarToolStripMenuItem})
     Me.ArxiuToolStripMenuItem.Name = "ArxiuToolStripMenuItem"
     Me.ArxiuToolStripMenuItem.Size = New System.Drawing.Size(46, 20)
     Me.ArxiuToolStripMenuItem.Text = "Arxiu"
@@ -196,7 +208,7 @@ Partial Class frmMain
     '
     'ImportarToolStripMenuItem
     '
-    Me.ImportarToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ArxiuPathDORADToolStripMenuItem})
+    Me.ImportarToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ArxiuPathDORADToolStripMenuItem, Me.ArxiuEnFormatGSToolStripMenuItem})
     Me.ImportarToolStripMenuItem.Name = "ImportarToolStripMenuItem"
     Me.ImportarToolStripMenuItem.Size = New System.Drawing.Size(167, 22)
     Me.ImportarToolStripMenuItem.Text = "Importar"
@@ -207,11 +219,30 @@ Partial Class frmMain
     Me.ArxiuPathDORADToolStripMenuItem.Size = New System.Drawing.Size(182, 22)
     Me.ArxiuPathDORADToolStripMenuItem.Text = "Arxiu path d'ORAD..."
     '
-    'ExportarToolStripMenuItem
+    'ArxiuEnFormatGSToolStripMenuItem
     '
-    Me.ExportarToolStripMenuItem.Name = "ExportarToolStripMenuItem"
-    Me.ExportarToolStripMenuItem.Size = New System.Drawing.Size(167, 22)
-    Me.ExportarToolStripMenuItem.Text = "Exportar..."
+    Me.ArxiuEnFormatGSToolStripMenuItem.Name = "ArxiuEnFormatGSToolStripMenuItem"
+    Me.ArxiuEnFormatGSToolStripMenuItem.Size = New System.Drawing.Size(182, 22)
+    Me.ArxiuEnFormatGSToolStripMenuItem.Text = "Arxiu en format GS..."
+    '
+    'ExportarToolStripMenuItem1
+    '
+    Me.ExportarToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExportarToolStripMenuItem2, Me.ExportarEnFormatGSToolStripMenuItem1})
+    Me.ExportarToolStripMenuItem1.Name = "ExportarToolStripMenuItem1"
+    Me.ExportarToolStripMenuItem1.Size = New System.Drawing.Size(167, 22)
+    Me.ExportarToolStripMenuItem1.Text = "Exportar"
+    '
+    'ExportarToolStripMenuItem2
+    '
+    Me.ExportarToolStripMenuItem2.Name = "ExportarToolStripMenuItem2"
+    Me.ExportarToolStripMenuItem2.Size = New System.Drawing.Size(198, 22)
+    Me.ExportarToolStripMenuItem2.Text = "Exportar..."
+    '
+    'ExportarEnFormatGSToolStripMenuItem1
+    '
+    Me.ExportarEnFormatGSToolStripMenuItem1.Name = "ExportarEnFormatGSToolStripMenuItem1"
+    Me.ExportarEnFormatGSToolStripMenuItem1.Size = New System.Drawing.Size(198, 22)
+    Me.ExportarEnFormatGSToolStripMenuItem1.Text = "Exportar en format GS..."
     '
     'ToolStripMenuItem2
     '
@@ -394,13 +425,15 @@ Partial Class frmMain
     Me.TableLayoutPanel1.ColumnCount = 2
     Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120.0!))
     Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-    Me.TableLayoutPanel1.Controls.Add(Me.PanelOpenGL, 0, 1)
+    Me.TableLayoutPanel1.Controls.Add(Me.PanelOpenGL, 0, 2)
     Me.TableLayoutPanel1.Controls.Add(Me.TrackBarFrame, 1, 0)
     Me.TableLayoutPanel1.Controls.Add(Me.CheckBoxRender, 0, 0)
+    Me.TableLayoutPanel1.Controls.Add(Me.TableLayoutPanel2, 1, 1)
     Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
     Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
     Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-    Me.TableLayoutPanel1.RowCount = 2
+    Me.TableLayoutPanel1.RowCount = 3
+    Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
     Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
     Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
     Me.TableLayoutPanel1.Size = New System.Drawing.Size(733, 549)
@@ -411,9 +444,9 @@ Partial Class frmMain
     Me.TableLayoutPanel1.SetColumnSpan(Me.PanelOpenGL, 2)
     Me.PanelOpenGL.Controls.Add(Me.GLControl1)
     Me.PanelOpenGL.Dock = System.Windows.Forms.DockStyle.Fill
-    Me.PanelOpenGL.Location = New System.Drawing.Point(3, 43)
+    Me.PanelOpenGL.Location = New System.Drawing.Point(3, 83)
     Me.PanelOpenGL.Name = "PanelOpenGL"
-    Me.PanelOpenGL.Size = New System.Drawing.Size(727, 503)
+    Me.PanelOpenGL.Size = New System.Drawing.Size(727, 463)
     Me.PanelOpenGL.TabIndex = 4
     '
     'ContextMenuStripViewport
@@ -493,12 +526,80 @@ Partial Class frmMain
     Me.CheckBoxRender.Text = "Render"
     Me.CheckBoxRender.UseVisualStyleBackColor = True
     '
+    'TableLayoutPanel2
+    '
+    Me.TableLayoutPanel2.ColumnCount = 5
+    Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+    Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+    Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+    Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+    Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+    Me.TableLayoutPanel2.Controls.Add(Me.ButtonSetInitPosition, 0, 0)
+    Me.TableLayoutPanel2.Controls.Add(Me.ButtonSetOutPosition, 2, 0)
+    Me.TableLayoutPanel2.Controls.Add(Me.LabelInitPosition, 1, 0)
+    Me.TableLayoutPanel2.Controls.Add(Me.LabelOutPosition, 3, 0)
+    Me.TableLayoutPanel2.Controls.Add(Me.NumericUpDown1, 4, 0)
+    Me.TableLayoutPanel2.Location = New System.Drawing.Point(123, 43)
+    Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+    Me.TableLayoutPanel2.RowCount = 1
+    Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+    Me.TableLayoutPanel2.Size = New System.Drawing.Size(601, 28)
+    Me.TableLayoutPanel2.TabIndex = 7
+    '
+    'ButtonSetInitPosition
+    '
+    Me.ButtonSetInitPosition.Location = New System.Drawing.Point(3, 3)
+    Me.ButtonSetInitPosition.Name = "ButtonSetInitPosition"
+    Me.ButtonSetInitPosition.Size = New System.Drawing.Size(114, 21)
+    Me.ButtonSetInitPosition.TabIndex = 0
+    Me.ButtonSetInitPosition.Text = "Set init position"
+    Me.ButtonSetInitPosition.UseVisualStyleBackColor = True
+    '
+    'ButtonSetOutPosition
+    '
+    Me.ButtonSetOutPosition.Location = New System.Drawing.Point(243, 3)
+    Me.ButtonSetOutPosition.Name = "ButtonSetOutPosition"
+    Me.ButtonSetOutPosition.Size = New System.Drawing.Size(114, 21)
+    Me.ButtonSetOutPosition.TabIndex = 1
+    Me.ButtonSetOutPosition.Text = "Set out position"
+    Me.ButtonSetOutPosition.UseVisualStyleBackColor = True
+    '
+    'LabelInitPosition
+    '
+    Me.LabelInitPosition.AutoSize = True
+    Me.LabelInitPosition.Location = New System.Drawing.Point(123, 0)
+    Me.LabelInitPosition.Name = "LabelInitPosition"
+    Me.LabelInitPosition.Size = New System.Drawing.Size(60, 13)
+    Me.LabelInitPosition.TabIndex = 2
+    Me.LabelInitPosition.Text = "Init position"
+    '
+    'LabelOutPosition
+    '
+    Me.LabelOutPosition.AutoSize = True
+    Me.LabelOutPosition.Location = New System.Drawing.Point(363, 0)
+    Me.LabelOutPosition.Name = "LabelOutPosition"
+    Me.LabelOutPosition.Size = New System.Drawing.Size(63, 13)
+    Me.LabelOutPosition.TabIndex = 3
+    Me.LabelOutPosition.Text = "Out position"
+    '
+    'NumericUpDown1
+    '
+    Me.NumericUpDown1.Location = New System.Drawing.Point(483, 3)
+    Me.NumericUpDown1.Name = "NumericUpDown1"
+    Me.NumericUpDown1.Size = New System.Drawing.Size(108, 20)
+    Me.NumericUpDown1.TabIndex = 4
+    '
     'TimerFrame
     '
     Me.TimerFrame.Interval = 40
     '
     'TimerInitOPENGL
     '
+    '
+    'OpenFileDialogImportarGS
+    '
+    Me.OpenFileDialogImportarGS.FileName = "OpenFileDialog1"
+    Me.OpenFileDialogImportarGS.Filter = "json files|*.json|all files|*.*"
     '
     'GLControl1
     '
@@ -508,15 +609,13 @@ Partial Class frmMain
     Me.GLControl1.Dock = System.Windows.Forms.DockStyle.Fill
     Me.GLControl1.Location = New System.Drawing.Point(0, 0)
     Me.GLControl1.Name = "GLControl1"
-    Me.GLControl1.Size = New System.Drawing.Size(727, 503)
+    Me.GLControl1.Size = New System.Drawing.Size(727, 463)
     Me.GLControl1.TabIndex = 1
     Me.GLControl1.VSync = False
     '
-    'ExportarEnFormatGSToolStripMenuItem
+    'SaveFileDialogExportGS
     '
-    Me.ExportarEnFormatGSToolStripMenuItem.Name = "ExportarEnFormatGSToolStripMenuItem"
-    Me.ExportarEnFormatGSToolStripMenuItem.Size = New System.Drawing.Size(198, 22)
-    Me.ExportarEnFormatGSToolStripMenuItem.Text = "Exportar en format GS..."
+    Me.SaveFileDialogExportGS.Filter = "GS file|*.json"
     '
     'frmMain
     '
@@ -549,11 +648,14 @@ Partial Class frmMain
     Me.PanelOpenGL.ResumeLayout(False)
     Me.ContextMenuStripViewport.ResumeLayout(False)
     CType(Me.TrackBarFrame, System.ComponentModel.ISupportInitialize).EndInit()
+    Me.TableLayoutPanel2.ResumeLayout(False)
+    Me.TableLayoutPanel2.PerformLayout()
+    CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
     Me.ResumeLayout(False)
     Me.PerformLayout()
 
   End Sub
-  Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
+  Friend WithEvents OpenFileDialogImportar As System.Windows.Forms.OpenFileDialog
   Friend WithEvents ButtonListen As System.Windows.Forms.Button
   Friend WithEvents ButtonClear As System.Windows.Forms.Button
   Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
@@ -579,7 +681,6 @@ Partial Class frmMain
   Friend WithEvents EinesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
   Friend WithEvents VeureFinestraDePaquetsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
   Friend WithEvents ToolStripMenuItem3 As System.Windows.Forms.ToolStripSeparator
-  Friend WithEvents ExportarToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
   Friend WithEvents ImportarToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
   Friend WithEvents ArxiuPathDORADToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
   Friend WithEvents PanelCapture As System.Windows.Forms.Panel
@@ -608,5 +709,16 @@ Partial Class frmMain
   Friend WithEvents ToolStripMenuItem4 As System.Windows.Forms.ToolStripSeparator
   Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
   Friend WithEvents CheckBoxRender As CheckBox
-  Friend WithEvents ExportarEnFormatGSToolStripMenuItem As ToolStripMenuItem
+  Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
+  Friend WithEvents ButtonSetInitPosition As Button
+  Friend WithEvents ButtonSetOutPosition As Button
+  Friend WithEvents LabelInitPosition As Label
+  Friend WithEvents LabelOutPosition As Label
+  Friend WithEvents NumericUpDown1 As NumericUpDown
+  Friend WithEvents ArxiuEnFormatGSToolStripMenuItem As ToolStripMenuItem
+  Friend WithEvents ExportarToolStripMenuItem1 As ToolStripMenuItem
+  Friend WithEvents ExportarToolStripMenuItem2 As ToolStripMenuItem
+  Friend WithEvents ExportarEnFormatGSToolStripMenuItem1 As ToolStripMenuItem
+  Friend WithEvents OpenFileDialogImportarGS As OpenFileDialog
+  Friend WithEvents SaveFileDialogExportGS As SaveFileDialog
 End Class
